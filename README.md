@@ -1,5 +1,5 @@
 dotvim
 ======
-$ cd
-$ ln -s dotvim/vim .vim
-$ ln -s dotvim/vimrc .vimrc
+$ cd <br>
+$ ln -s dotvim/vim .vim <br>
+$ ln -s dotvim/vimrc .vimrc <br>

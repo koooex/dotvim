@@ -1,0 +1,96 @@
+#
+# TextMate Snippets
+#
+snippet inc "#include local header"
+#include "${1:`!p snip.rv = snip.basename`.h}"$0
+endsnippet
+
+snippet ind "#include system header"
+#include <${1}.h>$0
+endsnippet
+
+snippet ins "#include special header"
+#include <${1}>$0
+endsnippet
+
+snippet def "#ifndef / #define / #endif"
+#ifndef ${1/([A-Za-z0-9_]+).*/$1/}
+#define ${1:Symbol} ${2:value}
+#endif
+endsnippet
+
+snippet mark "#pragma mark"
+#if 0
+${1:#pragma mark}
+#endif
+
+$0
+endsnippet
+
+snippet once "include header guard"
+#ifndef ${1:`!p
+if not snip.c:
+	import random, string
+	name = re.sub(r'[^A-Za-z0-9]+', '_', snip.fn).upper()
+	rand = ''.join(random.sample(string.ascii_letters+string.digits, 8))
+	#snip.rv = ('%s_%s' % (name,rand)).upper()
+	snip.rv = ('__%s__' % (name,)).upper()
+else:
+    snip.rv = snip.c`}
+#define $1
+
+${0}
+
+#endif /* $1 */
+endsnippet
+
+snippet main "main()"
+int main(int argc, char const *argv[])
+{
+	${0:/* code */}
+	return 0;
+}
+endsnippet
+
+snippet if "if statement"
+if(${1:/* condition */}) {
+	${0:/* code */}
+}
+endsnippet
+
+snippet do "do...while statement"
+do {
+	${0:/* code */}
+} while(${1:/* condition */});
+endsnippet
+
+snippet for "for loop statement"
+for(${1:size_t} ${2:i} = 0; $2 < ${3:count}; ${4:++$2}) {
+	${0:/* code */}
+}
+endsnippet
+
+snippet enum "enum statement"
+enum ${1:name} { $0 };
+endsnippet
+
+snippet struct "struct statement"
+struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`}
+{
+	${0:/* data */}
+};
+endsnippet
+
+snippet printf "printf statement"
+printf("${1:%s}\n"${1/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$2${1/([^%]|%%)*(%.)?.*/(?2:\);)/}
+endsnippet
+
+snippet fprintf "fprintf statement"
+fprintf(${1:stderr}, "${2:%s}\n"${2/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$3${2/([^%]|%%)*(%.)?.*/(?2:\);)/}
+endsnippet
+
+snippet typedef "typedef statement"
+typedef ${1:int} ${2:MyCustomType};
+endsnippet
+
+

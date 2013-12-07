@@ -9,16 +9,48 @@
 set nocompatible
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" global variable
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if has("mac")
+    let g:OS#win  = 0
+    let g:OS#mac  = 1
+    let g:OS#unix = 0
+elseif has("unix")
+    let g:OS#win  = 0
+    let g:OS#mac  = 0
+    let g:OS#unix = 1
+else
+    let g:OS#win  = 1
+    let g:OS#mac  = 0
+    let g:OS#unix = 0
+endif
+
+if has("gui_running")
+    let g:OS#gui = 1
+else
+    let g:OS#gui = 0
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use bundle plugins
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set rtp+=~/.vim/vimdoc
-set rtp+=~/.vim/vimfold
-set rtp+=~/.vim/bundle/vundle/
-
-call vundle#rc()
+if g:OS#win
+    set rtp+=~/dotvim/vimdoc
+    set rtp+=~/dotvim/vimfold
+    set rtp+=~/dotvim/bundle/vundle/
+    call vundle#rc("$HOME/dotvim/bundle")
+else
+    set rtp+=~/.vim/vimdoc
+    set rtp+=~/.vim/vimfold
+    set rtp+=~/.vim/bundle/vundle
+    call vundle#rc()
+endif
 
 Bundle 'vundle'
+
 Bundle 'clang-complete'
 Bundle 'SirVer/ultisnips'
 Bundle 'Shougo/neocomplete.vim'
@@ -40,36 +72,14 @@ Bundle 'The-NERD-Commenter'
 
 Bundle 'majutsushi/tagbar'
 Bundle 'bling/vim-airline'
-
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'hdima/python-syntax'
 Bundle 'matchit.zip'
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Start
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("mac")
-    let g:OS#win  = 0
-    let g:OS#mac  = 1
-    let g:OS#unix = 0
-elseif has("unix")
-    let g:OS#win  = 0
-    let g:OS#mac  = 0
-    let g:OS#unix = 1
-else
-    let g:OS#win  = 1
-    let g:OS#mac  = 0
-    let g:OS#unix = 0
-endif
-
-if has("gui_running")
-    let g:OS#gui = 1
-else
-    let g:OS#gui = 0
-endif
-
 if g:OS#gui
     set guioptions-=T
     set guioptions-=L
@@ -84,13 +94,13 @@ if g:OS#win
     set columns=130
     set linespace=0
 
-    set gfn=Monaco:h8:cANSI
+    set gfn=PowerMonaco:h8:cANSI
     " set gfn=Consolas:h10:cANSI
     " set gfn=Courier:h10:cANSI
     " set gfw=Microsoft_YaHei:h9
 
     lang message en_US
-    autocmd! bufwritepost vimrc source $VIM/vimrc
+    autocmd! bufwritepost vimrc source $HOME/dotvim/vimrc
 elseif g:OS#unix
     set t_Co = 8
 else
@@ -98,9 +108,8 @@ else
         set lines=38
         set columns=120
 
-        set gfn=Monaco:h11
-        set gfw=MicrosoftYaHei:h12
-
+        " set gfn=Monaco:h11
+        " set gfw=MicrosoftYaHei:h12
         set gfn=PowerMonaco:h11
         set gfw=PowerMonaco:h11
     else
@@ -444,67 +453,85 @@ nmap <leader>lv :lv /<C-R>=expand("<cword>")<CR>/ %<CR>:lw<CR><ESC>
 " Always use the statusline
 set laststatus=2
 
-let g:airline_inactive_collapse = 0
-"let g:airline_exclude_filetypes = ['help']
+function! g:has_plugin(name)
+    let pat = 'plugin/'.a:name.'.vim'
+    return !empty(globpath(&rtp, pat))
+endfunction
 
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+if g:has_plugin('airline')
+    let g:airline_inactive_collapse = 0
+    "let g:airline_exclude_filetypes = ['help']
+
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+
+    let g:airline_powerline_fonts = 1
+    let g:airline_left_sep = '⮀'
+    let g:airline_left_alt_sep = '⮁'
+    let g:airline_right_sep = '⮂'
+    let g:airline_right_alt_sep = '⮃'
+
+    let g:airline_symbols.branch = '⭠'
+    let g:airline_symbols.readonly = '⭤'
+    let g:airline_symbols.linenr = '⭡'
+
+    """ Unicode symbols """
+    " let g:airline_symbols.linenr = '␊'
+    " let g:airline_symbols.linenr = '␤'
+    " let g:airline_symbols.linenr = '¶'
+    " let g:airline_symbols.branch = '⎇'
+    " let g:airline_symbols.paste = 'ρ'
+    " let g:airline_symbols.paste = 'Þ'
+    " let g:airline_symbols.paste = '∥'
+    " let g:airline_symbols.whitespace = 'Ξ'
+
+    let g:airline#extensions#whitespace#enabled = 1
+    let g:airline#extensions#whitespace#symbol = '@'
+    let g:airline#extensions#whitespace#checks = ['indent', 'trailing']
+    let g:airline#extensions#whitespace#show_message = 1
+    let g:airline#extensions#whitespace#trailing_format = '%s!'
+    let g:airline#extensions#whitespace#mixed_indent_format = '%s-'
+
+    " let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['o', 'x', 'y', 'z', 'warning']]
+    "
+    let g:airline_section_a = airline#section#create(['mode'])
+    let g:airline_section_b = airline#section#create(['%t %m%w%q'])
+    let g:airline_section_c = airline#section#create(["%{fnamemodify(getcwd(),':p:~:h')}"])
+    " let g:airline_section_c = airline#section#create(["%{expand('%:p:~:h')}"])
+
+    " let g:airline_section_x = airline#section#create(["0x%02B"])
+    " let g:airline_section_y = airline#section#create(["%l:%L:%p%%, %c"])
+    let g:airline_section_x = airline#section#create([""])
+    let g:airline_section_y = airline#section#create(["%{strlen(&filetype)?&filetype:'none'}, %{&encoding}, %{&fileformat}"])
+    let g:airline_section_z = airline#section#create(["%p%% ⭡ %l:%L, %c, 0x%02B"])
+    "let g:airline_section_z = airline#section#create(["%{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))}"])
+
+    " let g:airline#extensions#tagbar#enabled = 0
+    " let g:airline_exclude_filetypes = ['tagbar']
+
+    " function! MyTagbarStatusline()
+    "     let text = g:tagbar_sort ? 'n' : 'o'
+    "     let filename = 'blank'
+    "     if !empty(s:known_files.getCurrent())
+    "         let filename = fnamemodify(s:known_files.getCurrent().fpath, ':t')
+    "     endif
+    "     return '-'.text.'-'.filename.'-'
+    " endfunction
+
+    " autocmd FileType tagbar setlocal statusline=%!MyTagbarStatusline()
+else
+    set statusline=
+    set statusline+=\ %t\ %m%w%q
+    set statusline+=\ [%{strlen(&filetype)?&filetype:'none'},%{&encoding},%{&fileformat}]
+    set statusline+=\ [%l:%L:%p%%,%c,0x%02B]
+    " set statusline+=\ \ %{synIDattr(synID(line('.'),col('.'),1),'name')}
+    " set statusline+=\ \ %<@@%{expand('%:p:~:h')}
+    set statusline+=\ \ %<@@%{fnamemodify(getcwd(),':p:~:h')}
+    set statusline+=%=
+    set statusline+=\ %{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))} 
+    set statusline+=\ 
 endif
-
-let g:airline_powerline_fonts = 1
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-
-let g:airline_symbols.branch = '⭠'
-let g:airline_symbols.readonly = '⭤'
-let g:airline_symbols.linenr = '⭡'
-
-""" Unicode symbols """
-" let g:airline_symbols.linenr = '␊'
-" let g:airline_symbols.linenr = '␤'
-" let g:airline_symbols.linenr = '¶'
-" let g:airline_symbols.branch = '⎇'
-" let g:airline_symbols.paste = 'ρ'
-" let g:airline_symbols.paste = 'Þ'
-" let g:airline_symbols.paste = '∥'
-" let g:airline_symbols.whitespace = 'Ξ'
-
-let g:airline#extensions#whitespace#enabled = 1
-let g:airline#extensions#whitespace#symbol = '@'
-let g:airline#extensions#whitespace#checks = ['indent', 'trailing']
-let g:airline#extensions#whitespace#show_message = 1
-let g:airline#extensions#whitespace#trailing_format = '%s!'
-let g:airline#extensions#whitespace#mixed_indent_format = '%s-'
-
-" let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['o', 'x', 'y', 'z', 'warning']]
-"
-let g:airline_section_a = 'mode'
-let g:airline_section_b = airline#section#create(['%t %m%w%q'])
-let g:airline_section_c = airline#section#create(["%{fnamemodify(getcwd(),':p:~:h')}"])
-" let g:airline_section_c = airline#section#create(["%{expand('%:p:~:h')}"])
-
-" let g:airline_section_x = airline#section#create(["0x%02B"])
-" let g:airline_section_y = airline#section#create(["%l:%L:%p%%, %c"])
-let g:airline_section_x = airline#section#create([""])
-let g:airline_section_y = airline#section#create(["%{strlen(&filetype)?&filetype:'none'}, %{&encoding}, %{&fileformat}"])
-let g:airline_section_z = airline#section#create(["%p%% ⭡ %l:%L, %c, 0x%02B"])
-"let g:airline_section_z = airline#section#create(["%{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))}"])
-
-" let g:airline#extensions#tagbar#enabled = 0
-" let g:airline_exclude_filetypes = ['tagbar']
-
-" function! MyTagbarStatusline()
-"     let text = g:tagbar_sort ? 'n' : 'o'
-"     let filename = 'blank'
-"     if !empty(s:known_files.getCurrent())
-"         let filename = fnamemodify(s:known_files.getCurrent().fpath, ':t')
-"     endif
-"     return '-'.text.'-'.filename.'-'
-" endfunction
-
-" autocmd FileType tagbar setlocal statusline=%!MyTagbarStatusline()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => gundo
@@ -535,8 +562,14 @@ let g:solarized_termtrans = 1
 let g:solarized_termcolors = 256
 let g:solarized_visibility = 'normal'
 
-colorscheme solarized
+function! g:has_colors(name)
+    let pat = 'colors/'.a:name.'.vim'
+    return !empty(globpath(&rtp, pat))
+endfunction
 
+if g:has_colors('solarized')
+    colorscheme solarized
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " easymotion.vim

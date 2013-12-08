@@ -1,6 +1,6 @@
 "
 "======================================================================
-"   Author: Sam [kooex@gmail.com]
+"   Author: Sam [koooex@gmail.com]
 "  Version: 0.1
 "  Changed: 05/03/2011 15:45:37
 "  History:

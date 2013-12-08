@@ -497,7 +497,7 @@ if g:has_plugin('airline')
 
     let g:airline_section_x = airline#section#create([""])
     let g:airline_section_y = airline#section#create_right(["%{strlen(&filetype)?&filetype:'none'}", "%{&encoding}", "%{&fileformat}"])
-    let g:airline_section_z = airline#section#create_right(["%p%%", "⭡ %l:%L, %c", "0x%02B"])
+    let g:airline_section_z = airline#section#create_right(["⭡ %l:%L, %c", "0x%02B", "%p%%"])
 
     " let g:airline_inactive_collapse = 0
     " let g:airline_exclude_filetypes = ['help']

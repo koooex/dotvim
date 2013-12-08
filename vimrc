@@ -459,8 +459,8 @@ function! g:has_plugin(name)
 endfunction
 
 if g:has_plugin('airline')
-    let g:airline_inactive_collapse = 0
-    "let g:airline_exclude_filetypes = ['help']
+    " let g:airline_inactive_collapse = 0
+    " let g:airline_exclude_filetypes = ['help']
 
     if !exists('g:airline_symbols')
         let g:airline_symbols = {}
@@ -503,7 +503,7 @@ if g:has_plugin('airline')
     " let g:airline_section_x = airline#section#create(["0x%02B"])
     " let g:airline_section_y = airline#section#create(["%l:%L:%p%%, %c"])
     let g:airline_section_x = airline#section#create([""])
-    let g:airline_section_y = airline#section#create(["%{strlen(&filetype)?&filetype:'none'}, %{&encoding}, %{&fileformat}"])
+    let g:airline_section_y = airline#section#create_right(["%{strlen(&filetype)?&filetype:'none'}", "%{&encoding}", "%{&fileformat}"])
     let g:airline_section_z = airline#section#create(["%p%% ⭡ %l:%L, %c, 0x%02B"])
     "let g:airline_section_z = airline#section#create(["%{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))}"])
 
@@ -529,8 +529,8 @@ else
     " set statusline+=\ \ %<@@%{expand('%:p:~:h')}
     set statusline+=\ \ %<@@%{fnamemodify(getcwd(),':p:~:h')}
     set statusline+=%=
-    set statusline+=\ %{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))} 
-    set statusline+=\ 
+    set statusline+=\ %{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))}
+    set statusline+=\
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -459,9 +459,6 @@ function! g:has_plugin(name)
 endfunction
 
 if g:has_plugin('airline')
-    " let g:airline_inactive_collapse = 0
-    " let g:airline_exclude_filetypes = ['help']
-
     if !exists('g:airline_symbols')
         let g:airline_symbols = {}
     endif
@@ -493,19 +490,17 @@ if g:has_plugin('airline')
     let g:airline#extensions#whitespace#trailing_format = '%s!'
     let g:airline#extensions#whitespace#mixed_indent_format = '%s-'
 
-    " let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['o', 'x', 'y', 'z', 'warning']]
-    "
     let g:airline_section_a = airline#section#create(['mode'])
     let g:airline_section_b = airline#section#create(['%t %m%w%q'])
     let g:airline_section_c = airline#section#create(["%{fnamemodify(getcwd(),':p:~:h')}"])
     " let g:airline_section_c = airline#section#create(["%{expand('%:p:~:h')}"])
 
-    " let g:airline_section_x = airline#section#create(["0x%02B"])
-    " let g:airline_section_y = airline#section#create(["%l:%L:%p%%, %c"])
     let g:airline_section_x = airline#section#create([""])
     let g:airline_section_y = airline#section#create_right(["%{strlen(&filetype)?&filetype:'none'}", "%{&encoding}", "%{&fileformat}"])
-    let g:airline_section_z = airline#section#create(["%p%% ⭡ %l:%L, %c, 0x%02B"])
-    "let g:airline_section_z = airline#section#create(["%{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))}"])
+    let g:airline_section_z = airline#section#create_right(["%p%%", "⭡ %l:%L, %c", "0x%02B"])
+
+    " let g:airline_inactive_collapse = 0
+    " let g:airline_exclude_filetypes = ['help']
 
     " let g:airline#extensions#tagbar#enabled = 0
     " let g:airline_exclude_filetypes = ['tagbar']

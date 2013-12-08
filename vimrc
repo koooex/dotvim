@@ -54,7 +54,7 @@ Bundle 'vundle'
 Bundle 'clang-complete'
 Bundle 'SirVer/ultisnips'
 Bundle 'Shougo/neocomplete.vim'
-Bundle 'RyanPineo/neocomplete-ultisnips'
+Bundle 'koooex/neocomplete-ultisnips'
 
 Bundle 'Tabular'
 Bundle 'EasyMotion'
@@ -745,6 +745,7 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => snippets
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:UltiSnipsUsePythonVersion = 2
 let g:UltiSnipsSnippetDirectories = ["snippets"]
 let g:UltiSnipsExpandTrigger       = "<tab>"
 let g:UltiSnipsJumpForwardTrigger  = "<tab>"

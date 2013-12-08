@@ -525,7 +525,7 @@ else
     set statusline+=\ \ %<@@%{fnamemodify(getcwd(),':p:~:h')}
     set statusline+=%=
     set statusline+=\ %{strftime('%m/%d/%Y\ %H:%M',getftime(expand('%')))}
-    set statusline+=\
+    set statusline+=\ 
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -757,7 +757,7 @@ let g:clang_complete_copen = 1
 " let g:clang_sort_algo = 'alpha'
 
 if g:OS#mac
-    let g:clang_library_path = '/usr/local/llvm/lib'
+    let g:clang_library_path = '/usr/opt/clang/lib'
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

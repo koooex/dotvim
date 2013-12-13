@@ -8,5 +8,4 @@ $ gVim.exe +BundleInstall +qall <br>
 $ cd <br>
 $ git clone https://github.com/koooex/dotvim.git .vim <br>
 $ git clone https://github.com/gmarik/vundle.git .vim/bundle/vundle <br>
-$ ln -s .vim/vimrc .vimrc <br>
 $ vim +BundleInstall +qall <br>

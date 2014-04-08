@@ -46,11 +46,14 @@ else
     set rtp+=~/.vim/vimdoc
     set rtp+=~/.vim/vimfold
     set rtp+=~/.vim/bundle/vundle
-    set rtp+=$GOROOT/misc/vim
+    " set rtp+=$GOROOT/misc/vim
+    " set rtp+=$HOME/Develop/go/src/github.com/nsf/gocode/vim
     call vundle#rc()
 endif
 
 Bundle 'vundle'
+
+Bundle 'Blackrush/vim-gocode'
 
 Bundle 'clang-complete'
 Bundle 'SirVer/ultisnips'

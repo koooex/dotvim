@@ -46,6 +46,7 @@ else
     set rtp+=~/.vim/vimdoc
     set rtp+=~/.vim/vimfold
     set rtp+=~/.vim/bundle/vundle
+    set rtp+=$GOROOT/misc/vim
     call vundle#rc()
 endif
 
@@ -741,7 +742,7 @@ endfunction
 " => snippets
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsSnippetDirectories = ["snippets"]
+let g:UltiSnipsSnippetDirectories = ["UltiSnips"]
 let g:UltiSnipsExpandTrigger       = "<tab>"
 let g:UltiSnipsJumpForwardTrigger  = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
@@ -821,7 +822,7 @@ function! s:check_back_space()
 endfunction"}}}
 
 function! s:my_smart_tab()
-    call UltiSnips_ExpandSnippetOrJump()
+    call UltiSnips#ExpandSnippetOrJump()
 
     if g:ulti_expand_or_jump_res > 0
         return ""
@@ -837,7 +838,7 @@ endfunction
 let g:UltiSnipsExpandTrigger       = "<c-\>"
 let g:UltiSnipsJumpForwardTrigger  = "<c-\>"
 inoremap <silent><Tab> <C-R>=<SID>my_smart_tab()<CR>
-snoremap <silent><Tab> <Esc>:call UltiSnips_ExpandSnippetOrJump()<CR>
+snoremap <silent><Tab> <Esc>:call UltiSnips#ExpandSnippetOrJump()<CR>
 
 inoremap <expr><c-u>   neocomplete#start_manual_complete()
 inoremap <expr><c-h>   neocomplete#smart_close_popup()."\<C-h>"
